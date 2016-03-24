@@ -9,7 +9,7 @@
 #import "EMRecommendationRequest+EmarsysMobileExtensions.h"
 #import "EMLogger.h"
 #import "EMAvailabilityZoneCommand.h"
-#import "EMSession.h"
+#import "EMSession+EmarsysMobileExtensions.h"
 #import "EMQueryParams.h"
 #import "EMCartCommand.h"
 #import "EMPurchaseCommand.h"
@@ -49,6 +49,10 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @implementation EMTransaction
+
++ (instancetype)transactionWithItem:(nullable EMRecommendationItem *)item {
+    return [[EMTransaction alloc] initWithItem:item];
+}
 
 - (instancetype)initWithItem:(nullable EMRecommendationItem *)item {
     self = [self init];
@@ -315,6 +319,18 @@ NS_ASSUME_NONNULL_BEGIN
 
     // MAGIC
     [params add:@"cp" intValue:1];
+
+    // Handle visitor
+    NSString *visitor = [session visitor];
+    if (visitor) {
+        [params add:@"vi" stringValue:visitor];
+    }
+
+    // Handle session
+    NSString *sessionID = [session session];
+    if (sessionID) {
+        [params add:@"s" stringValue:sessionID];
+    }
 
     // Append errors
     if ([_errors count] > 0) {

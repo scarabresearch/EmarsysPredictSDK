@@ -31,13 +31,12 @@ typedef NS_ENUM(uint8_t, EMLogLevel) {
 
 /// Merchant ID.
 @property(readwrite, nullable) NSString *merchantID;
-
 /// Customer email address.
 @property(readwrite, nullable) NSString *customerEmail;
-
 /// Customer ID.
 @property(readwrite, nullable) NSString *customerID;
-
+/// Advertising ID.
+@property(readonly, nonnull, nonatomic) NSString *advertisingID;
 /// Log level.
 @property(readwrite) EMLogLevel logLevel;
 

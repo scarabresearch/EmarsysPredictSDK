@@ -18,7 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithItemID:(NSString *)itemID
                          price:(float)price
                       quantity:(int)quantity;
-
 /// Initializes a new EMCartItem instance.
 + (instancetype)itemWithItemID:(NSString *)itemID
                          price:(float)price

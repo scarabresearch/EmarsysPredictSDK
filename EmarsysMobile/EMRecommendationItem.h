@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Item info.
 @property(readonly) NSDictionary<NSString *, id> *data;
+
 @end
 
 NS_ASSUME_NONNULL_END

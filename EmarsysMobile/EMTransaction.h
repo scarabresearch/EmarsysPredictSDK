@@ -12,9 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EMTransaction : NSObject
 
+/// Initialize a new EMTransaction instance.
 - (instancetype)init;
-
+/// Initialize a new EMTransaction instance.
 - (instancetype)initWithItem:(nullable EMRecommendationItem *)item;
+/// Initialize a new EMTransaction instance.
++ (instancetype)transactionWithItem:(nullable EMRecommendationItem *)item;
 
 /// Availability zone. If you run localized versions of your website, you
 /// should use this property.

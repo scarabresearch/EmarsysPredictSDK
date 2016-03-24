@@ -5,10 +5,11 @@
 
 @import Foundation;
 
-#import "EMSession.h"
+#import "EMSession+EmarsysMobileExtensions.h"
 #import "EMTransaction+EmarsysMobileExtensions.h"
 #import "NSString+EmarsysMobileExtensions.h"
 #import "EMResponseParser.h"
+#import "EMIdentifierManager.h"
 #import "EMLogger.h"
 #import "EMError.h"
 
@@ -20,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
                           error:(NSError *_Nullable *_Nonnull)error;
 
 @property(readwrite, nullable) NSMutableArray<EMTransaction *> *transactions;
+@property(readwrite) NSString *visitor;
+@property(readwrite) NSString *session;
 
 @end
 
@@ -60,47 +63,55 @@ NS_ASSUME_NONNULL_BEGIN
     DLOG(@"%@", url);
 
     // Completion handler for the request
-    id completionHandler =
-        ^(NSData *data, NSURLResponse *response, NSError *error) {
-          if (error) {
-              errorHandler(error);
-              return;
-          }
-          // Parse response
-          NSError *err = nil;
-          NSInteger code = ((NSHTTPURLResponse *)response).statusCode;
-          if (code != 200) {
-              NSString *message = [NSString
-                  stringWithFormat:@"Unexpected http status code %li", code];
-              ELOG(@"%@", message);
-              NSDictionary *d = @{NSLocalizedDescriptionKey : message};
-              err = [NSError errorWithDomain:EMErrorDomain
-                                        code:EMErrorBadHTTPStatus
-                                    userInfo:d];
-              errorHandler(error);
-              return;
-          }
-          // Get json content
-          NSDictionary<NSString *, id> *json = [NSJSONSerialization
-              JSONObjectWithData:data
-                         options:NSJSONReadingAllowFragments
-                           error:&err];
-          if (err) {
-              errorHandler(err);
-              return;
-          }
-          // Parse json
-          EMResponseParser *parser =
-              [[EMResponseParser alloc] initWithJSON:json error:&err];
-          if (err) {
-              errorHandler(err);
-              return;
-          }
-          // Forward results
-          [transaction handleResults:parser.results];
-        };
+    id completionHandler = ^(NSData *data, NSURLResponse *response,
+                             NSError *error) {
+      if (error) {
+          errorHandler(error);
+          return;
+      }
+      // Parse response
+      NSError *err = nil;
+      NSInteger code = ((NSHTTPURLResponse *)response).statusCode;
+      if (code != 200) {
+          NSString *message = [NSString
+              stringWithFormat:@"Unexpected http status code %ld", (long)code];
+          ELOG(@"%@", message);
+          NSDictionary *d = @{NSLocalizedDescriptionKey : message};
+          err = [NSError errorWithDomain:EMErrorDomain
+                                    code:EMErrorBadHTTPStatus
+                                userInfo:d];
+          errorHandler(error);
+          return;
+      }
+      // Get json content
+      NSDictionary<NSString *, id> *json =
+          [NSJSONSerialization JSONObjectWithData:data
+                                          options:NSJSONReadingAllowFragments
+                                            error:&err];
+      if (err) {
+          errorHandler(err);
+          return;
+      }
+      // Parse json
+      EMResponseParser *parser =
+          [[EMResponseParser alloc] initWithJSON:json error:&err];
+      if (err) {
+          errorHandler(err);
+          return;
+      }
+      // Store session and visitor
+      _session = parser.session;
+      _visitor = parser.visitor;
+      // Forward results
+      [transaction handleResults:parser.results];
+    };
     // Send get
-    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionConfiguration *conf =
+        [NSURLSessionConfiguration defaultSessionConfiguration];
+    [conf setHTTPAdditionalHeaders:@{
+        @"User-Agent" : @"EmarsysPredictSDK/1.0"
+    }];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:conf];
     NSURLSessionDataTask *dataTask =
         [session dataTaskWithURL:url completionHandler:completionHandler];
     [dataTask resume];
@@ -134,6 +145,10 @@ NS_ASSUME_NONNULL_BEGIN
         stringWithFormat:@"%@%@%@", @"/merchants/", _merchantID, @"/"];
     components.query = query;
     return [components URL];
+}
+
+- (NSString *)advertisingID {
+    return [[EMIdentifierManager sharedManager] advertisingIdentifier];
 }
 
 @end

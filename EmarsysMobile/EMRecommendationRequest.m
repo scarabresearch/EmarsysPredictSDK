@@ -37,6 +37,10 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
++ (instancetype)requestWithLogic:(NSString *)logic {
+    return [[EMRecommendationRequest alloc] initWithLogic:logic];
+}
+
 - (void)excludeItemsWhere:(NSString *)catalogField is:(NSString *)value {
     EMFilter *f = [[EMExcludeCommand alloc] initWithValue:value
                                                      rule:@"IS"

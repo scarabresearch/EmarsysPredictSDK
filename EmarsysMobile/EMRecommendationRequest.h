@@ -15,9 +15,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface EMRecommendationRequest : NSObject
 
 - (nullable instancetype)init UNAVAILABLE_ATTRIBUTE;
-
 /// Initialize a new EMRecommendationRequest instance.
 - (instancetype)initWithLogic:(NSString *)logic;
+/// Initialize a new EMRecommendationRequest instance.
++ (instancetype)requestWithLogic:(NSString *)logic;
+
 /// Exclude items where catalog field value is exactly the given value.
 - (void)excludeItemsWhere:(NSString *)catalogField is:(NSString *)value;
 /// Exclude items where catalog field value is contained in the given Array of
