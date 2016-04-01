@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+cd "${0%/*}"
+
+headerdoc2html -o ./doc ./EmarsysMobile/EMCartItem.h ./EmarsysMobile/EMError.h ./EmarsysMobile/EMRecommendationItem.h ./EmarsysMobile/EMRecommendationRequest.h ./EmarsysMobile/EMRecommendationResult.h ./EmarsysMobile/EMSession.h ./EmarsysMobile/EMTransaction.h
+
+gatherheaderdoc .

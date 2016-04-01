@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSURL *)generateGET:(EMTransaction *)transaction
                           error:(NSError *_Nullable *_Nonnull)error;
 
+- (BOOL)handleCookies:(NSError *_Nullable *_Nonnull)error;
+
 @property(readwrite, nullable) NSMutableArray<EMTransaction *> *transactions;
 @property(readwrite) NSString *visitor;
 @property(readwrite) NSString *session;
@@ -83,6 +85,12 @@ NS_ASSUME_NONNULL_BEGIN
           errorHandler(error);
           return;
       }
+      // Find cdv
+      if (![self handleCookies:&err]) {
+          ELOG(@"Cookie cdv is ")
+          errorHandler(err);
+          return;
+      };
       // Get json content
       NSDictionary<NSString *, id> *json =
           [NSJSONSerialization JSONObjectWithData:data
@@ -126,10 +134,11 @@ NS_ASSUME_NONNULL_BEGIN
             [NSString stringWithFormat:@"The merchantID is required"];
         ELOG(@"%@", message);
         NSDictionary *d = @{NSLocalizedDescriptionKey : message};
-        if (error)
+        if (error) {
             *error = [NSError errorWithDomain:EMErrorDomain
                                          code:EMErrorMissingMerchantID
                                      userInfo:d];
+        }
         return nil;
     }
     // Serialize query
@@ -147,8 +156,31 @@ NS_ASSUME_NONNULL_BEGIN
     return [components URL];
 }
 
-- (NSString *)advertisingID {
+- (nullable NSString *)advertisingID {
     return [[EMIdentifierManager sharedManager] advertisingIdentifier];
+}
+
+- (BOOL)handleCookies:(NSError *_Nullable *_Nonnull)error {
+    DLOG(@"Find cookie, cdv");
+    for (NSHTTPCookie *cookie in
+         [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies]) {
+        NSString *name = [cookie name];
+        NSString *value = [cookie value];
+        if ([@"cdv" isEqualToString:name] && value) {
+            DLOG(@"Found cookie, %@=%@", name, value);
+            [[EMIdentifierManager sharedManager]
+                setAdvertisingIdentifier:value];
+            return YES;
+        }
+    }
+    if (error) {
+        NSString *msg = [NSString stringWithFormat:@"Missing 'cdv' cookie"];
+        DLOG(@"%@", msg)
+        *error = [NSError errorWithDomain:EMErrorDomain
+                                     code:EMErrorMissingCDVCookie
+                                 userInfo:@{NSLocalizedDescriptionKey : msg}];
+    }
+    return NO;
 }
 
 @end

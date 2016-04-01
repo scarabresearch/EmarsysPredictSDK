@@ -9,35 +9,63 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/*!
+ * @typedef EMLogLevel
+ * @brief A list of log levels.
+ * @constant EMLogLevelDebug Print messages with debug or greater severity.
+ * @constant EMLogLevelInfo Print messages with info or greater severity.
+ * @constant EMLogLevelWarning Print messages with warning or greater severity.
+ * @constant EMLogLevelError Print messages only with error severity.
+ * @constant EMLogLevelNone Does not print any messages.
+ */
 typedef NS_ENUM(uint8_t, EMLogLevel) {
     EMLogLevelDebug,
     EMLogLevelInfo,
     EMLogLevelWarning,
     EMLogLevelError,
-    EMLogLevelNone
+    EMLogLevelNone = 0xFF
 };
 
-/// The global EmarsysMobile session object.
+/*!
+ * @brief The global EmarsysMobile session object.
+ */
 @interface EMSession : NSObject
 
 - (nullable instancetype)init UNAVAILABLE_ATTRIBUTE;
 
-/// Returns the shared session.
+/*!
+ * @brief Returns the shared session.
+ */
 + (EMSession *)sharedSession;
 
-/// Send transaction to the recommender server.
+/*!
+ * @brief Send transaction to the recommender server.
+ * @param transaction An EMTransaction instance to be send.
+ * @warning Please send the transaction only once.
+ * @param errorHandler Will be called if an error occurs.
+ */
 - (void)sendTransaction:(EMTransaction *)transaction
            errorHandler:(void (^)(NSError *error))errorHandler;
 
-/// Merchant ID.
+/*!
+ * @brief Merchant ID.
+ */
 @property(readwrite, nullable) NSString *merchantID;
-/// Customer email address.
+/*!
+ * @brief Customer email address.
+ */
 @property(readwrite, nullable) NSString *customerEmail;
-/// Customer ID.
+/*!
+ * @brief Customer ID.
+ */
 @property(readwrite, nullable) NSString *customerID;
-/// Advertising ID.
-@property(readonly, nonnull, nonatomic) NSString *advertisingID;
-/// Log level.
+/*!
+ * @brief Advertising ID.
+ */
+@property(readonly, nullable, nonatomic) NSString *advertisingID;
+/*!
+ * @brief Log level.
+ */
 @property(readwrite) EMLogLevel logLevel;
 
 @end

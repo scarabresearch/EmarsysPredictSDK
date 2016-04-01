@@ -126,7 +126,6 @@
 		9994500D1C9069470046F784 /* EMRecommendationResult+EmarsysMobileExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EMRecommendationResult+EmarsysMobileExtensions.h"; sourceTree = "<group>"; };
 		9994500E1C906C620046F784 /* EMRecommendationItem+EmarsysMobileExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EMRecommendationItem+EmarsysMobileExtensions.h"; sourceTree = "<group>"; };
 		999F7F411CA3CC460076C2D2 /* EMSession+EmarsysMobileExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EMSession+EmarsysMobileExtensions.h"; sourceTree = "<group>"; };
-		999F7F441CA3DC580076C2D2 /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
 		99D360BD1C86E09200E7C532 /* EMTransaction+EmarsysMobileExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EMTransaction+EmarsysMobileExtensions.h"; sourceTree = "<group>"; };
 		99D360BE1C86E19A00E7C532 /* EmarsysMobileTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmarsysMobileTest.m; sourceTree = "<group>"; };
 		99D360C01C871D0800E7C532 /* EMResponseParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMResponseParser.h; sourceTree = "<group>"; };
@@ -201,7 +200,6 @@
 		991EF8041C92E394006A143A /* Private */ = {
 			isa = PBXGroup;
 			children = (
-				999F7F441CA3DC580076C2D2 /* Header.h */,
 				990AD0FC1C7DC04C00585731 /* NSString+EmarsysMobileExtensions.h */,
 				990AD0FD1C7DC04C00585731 /* NSString+EmarsysMobileExtensions.m */,
 				9924BD731C99601400538921 /* NSArray+EmarsysMobileExtensions.h */,
@@ -516,6 +514,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_NULLABLE_TO_NONNULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
 				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
@@ -536,6 +535,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_NULLABLE_TO_NONNULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
 				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;

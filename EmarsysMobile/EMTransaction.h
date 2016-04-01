@@ -10,43 +10,87 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/*!
+ * @brief The transaction.
+ * @warning Please send transaction instances only once.
+ */
 @interface EMTransaction : NSObject
 
-/// Initialize a new EMTransaction instance.
+/*!
+ * @brief Initializes a newly allocated transaction instance.
+ */
 - (instancetype)init;
-/// Initialize a new EMTransaction instance.
+/*!
+ * @brief Initializes a newly allocated transaction instance.
+ * @param item Result item from the last recommendation result.
+ */
 - (instancetype)initWithItem:(nullable EMRecommendationItem *)item;
-/// Initialize a new EMTransaction instance.
+/*!
+ * @brief Creates and returns an transaction instance.
+ * @param item Result item from the last recommendation result.
+ */
 + (instancetype)transactionWithItem:(nullable EMRecommendationItem *)item;
 
-/// Availability zone. If you run localized versions of your website, you
-/// should use this property.
+/*!
+ * @brief Set availability zone.
+ * @discussion If you run localized versions of your application, you should use
+ * this call.
+ * @param availabilityZone ID of the availability zone.
+ */
 - (void)setAvailabilityZone:(NSString *)availabilityZone;
-/// Report a purchase event. This command should be called on the order
-/// confirmation page to report successful purchases. Also make sure all
-/// purchased items are passed to the command.
+/*!
+ * @brief Report a purchase event.
+ * @discussion This command should be called on the order confirmation page to
+ * report successful purchases. Also make sure all purchased items are passed to
+ * the command.
+ * @param orderID ID of the purchase.
+ * @param items Array of purchased objects.
+ */
 - (void)setPurchase:(NSString *)orderID ofItems:(NSArray<EMCartItem *> *)items;
-/// Report a search terms entered by visitor. This call should be placed in the
-/// search results page.
+/*!
+ * @brief Set search terms entered by visitor.
+ * @discussion This call should be placed in the search results page.
+ * @param searchTerm Search term entered by user.
+ */
 - (void)setSearchTerm:(NSString *)searchTerm;
-/// Report a product browsed by visitor. This command should be
-/// placed in all product pages – i.e. pages showing a single item in detail.
-/// Recommender features RELATED and ALSO_BOUGHT depend on this call.
+/*!
+ * @brief Report a product browsed by visitor.
+ * @discussion This command should be placed in all product pages – i.e. pages
+ * showing a single item in detail. Recommender features RELATED and ALSO_BOUGHT
+ * depend on this call.
+ * @param itemID ID of the viewed item (consistent with the item column
+ * specified in the catalog).
+ */
 - (void)setView:(NSString *)itemID;
-/// Report the list of items in the visitor's shopping cart. This command should
-/// be
-/// called on every page. Make sure all cart items are passed to the command. If
-/// the visitor's cart is empty, send the empty array [].
+/*!
+ * @brief Report the list of items in the visitor's shopping cart.
+ * @discussion This command should be called on every page. Make sure all cart
+ * items are passed to the command. If the visitor's cart is empty, send the
+ * empty array.
+ * @param items Array of cart objects.
+ */
 - (void)setCart:(NSArray<EMCartItem *> *)items;
-/// Report the category currently browsed by visitor. Should be called on all
-/// category pages. Pass a valid category path.
+/*!
+ * @brief Report the category currently browsed by visitor.
+ * @discussion Should be called on all category pages. Pass a valid category
+ * path.
+ * @param category Category path.
+ */
 - (void)setCategory:(NSString *)category;
-/// Report the keyword used by visitors to refine their searches. Brands,
-/// locations,
-/// price ranges are good examples of such keywords. If your site offers such
-/// features, you can pass keywords to the recommender system with this command.
+/*!
+ * @brief Report the keyword used by visitors to refine their searches.
+ * @discussion Brands, locations, price ranges are good examples of such
+ * keywords. If your site offers such features, you can pass keywords to the
+ * recommender system with this command.
+ * @param keyword Keyword selected by user.
+ */
 - (void)setKeyword:(NSString *)keyword;
-/// Request recommendations.
+/*!
+ * @brief Request recommendations.
+ * @discussion See usage examples and the list of available recommendation
+ * strategies.
+ * @param request Recommendation request instance.
+ */
 - (void)recommend:(EMRecommendationRequest *)request;
 
 @end

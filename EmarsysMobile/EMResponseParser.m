@@ -43,8 +43,9 @@ static NSError *newMissingFieldError(NSString *field) {
         // Get cohort
         NSString *cohort = json[@"cohort"];
         if (!cohort) {
-            if (error)
+            if (error) {
                 *error = newMissingFieldError(@"cohort");
+            }
             return nil;
         }
         _cohort = cohort;
@@ -53,8 +54,9 @@ static NSError *newMissingFieldError(NSString *field) {
         // Get visitor
         NSString *visitor = json[@"visitor"];
         if (!visitor) {
-            if (error)
+            if (error) {
                 *error = newMissingFieldError(@"visitor");
+            }
             return nil;
         }
         _visitor = visitor;
@@ -63,8 +65,9 @@ static NSError *newMissingFieldError(NSString *field) {
         // Get session
         NSString *session = json[@"session"];
         if (!session) {
-            if (error)
+            if (error) {
                 *error = newMissingFieldError(@"session");
+            }
             return nil;
         }
         _session = session;

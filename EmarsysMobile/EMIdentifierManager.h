@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (EMIdentifierManager *)sharedManager;
 
-@property(nonatomic, readonly) NSString *advertisingIdentifier;
+- (nullable NSString *)advertisingIdentifier;
+- (void)setAdvertisingIdentifier:(NSString *)advertisingIdentifier;
 
 @end
 

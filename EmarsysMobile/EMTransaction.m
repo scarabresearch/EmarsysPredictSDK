@@ -168,11 +168,12 @@ NS_ASSUME_NONNULL_BEGIN
                 @"The recommend logic must be unique inner transaction"];
         ELOG(@"%@", message);
         NSDictionary *d = @{NSLocalizedDescriptionKey : message};
-        if (error)
+        if (error) {
             *error =
                 [NSError errorWithDomain:EMErrorDomain
                                     code:EMErrorNonUniqueRecommendationLogic
                                 userInfo:d];
+        }
         return NO;
     }
     [_recommends
@@ -218,11 +219,6 @@ NS_ASSUME_NONNULL_BEGIN
         NSString *sha1 = [customerEmail sha1];
         [params add:@"eh" stringValue:sha1];
     }
-
-    // Handle advertiserID
-    [params add:@"vi"
-        stringValue:[[EMIdentifierManager sharedManager]
-                        advertisingIdentifier]];
 
     // Validate commands
     if (![self validateCommands:error]) {
@@ -320,10 +316,11 @@ NS_ASSUME_NONNULL_BEGIN
     // MAGIC
     [params add:@"cp" intValue:1];
 
-    // Handle visitor
-    NSString *visitor = [session visitor];
-    if (visitor) {
-        [params add:@"vi" stringValue:visitor];
+    // Handle advertiserID
+    NSString *advertisingIdentifier =
+        [[EMIdentifierManager sharedManager] advertisingIdentifier];
+    if (advertisingIdentifier) {
+        [params add:@"vi" stringValue:advertisingIdentifier];
     }
 
     // Handle session

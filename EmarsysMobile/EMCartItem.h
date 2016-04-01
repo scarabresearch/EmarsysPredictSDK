@@ -9,27 +9,44 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Cart item.
+/*!
+ * @brief The cart item.
+ */
 @interface EMCartItem : NSObject
 
 - (nullable instancetype)init UNAVAILABLE_ATTRIBUTE;
 
-/// Initializes a new EMCartItem instance.
+/*!
+ * @brief Initializes a newly allocated item instance.
+ */
 - (instancetype)initWithItemID:(NSString *)itemID
                          price:(float)price
                       quantity:(int)quantity;
-/// Initializes a new EMCartItem instance.
+/*!
+ * @brief Creates and returns an item instance.
+ * @param itemID ID of cart item (consistent with the item column specified in
+ * the catalog).
+ * @param price Sum total payable for the item, taking into consideration the
+ * quantity ordered, and any discounts.
+ * @param quantity Quantity in cart.
+ */
 + (instancetype)itemWithItemID:(NSString *)itemID
                          price:(float)price
                       quantity:(int)quantity;
 
-/// Unique ID of cart item (consistent with the item column specified in
-/// the catalog).
+/*!
+ * @brief ID of cart item (consistent with the item column specified in the
+ * catalog).
+ */
 @property(readonly) NSString *itemID;
-/// Sum total payable for the item, taking into consideration the quantity
-/// ordered, and any discounts.
+/*!
+ * @brief Sum total payable for the item, taking into consideration the quantity
+ * ordered, and any discounts.
+ */
 @property(readonly) float price;
-/// Quantity in the purchase.
+/*!
+ * @brief Quantity in cart.
+ */
 @property(readonly) int quantity;
 
 @end

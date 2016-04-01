@@ -11,52 +11,115 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Recommendation request.
+/*!
+ * @brief The recommendation request.
+ * @warning EMRecommendationRequests are not reusable.
+ */
 @interface EMRecommendationRequest : NSObject
 
 - (nullable instancetype)init UNAVAILABLE_ATTRIBUTE;
-/// Initialize a new EMRecommendationRequest instance.
+/*!
+ * @brief Initializes a newly allocated request instance.
+ * @param logic The recommendation strategy to be used. Eg. recommend similar
+ * products (RELATED), or show personal recommendations (PERSONAL), etc.
+ */
 - (instancetype)initWithLogic:(NSString *)logic;
-/// Initialize a new EMRecommendationRequest instance.
+/*!
+ * @brief Creates and returns a request instance.
+ * @param logic The recommendation strategy to be used. Eg. recommend similar
+ * products (RELATED), or show personal recommendations (PERSONAL), etc.
+ */
 + (instancetype)requestWithLogic:(NSString *)logic;
 
-/// Exclude items where catalog field value is exactly the given value.
+/*!
+ * @brief Set exclude criteria.
+ * @discussion Exclude items where catalog field value is exactly the given
+ * value.
+ * @param catalogField Catalog field name.
+ * @param value Value to compare against.
+ */
 - (void)excludeItemsWhere:(NSString *)catalogField is:(NSString *)value;
-/// Exclude items where catalog field value is contained in the given Array of
-/// values.
+/*!
+ * @brief Set exclude criteria.
+ * @discussion Exclude items where catalog field value is contained in the given
+ * array of values.
+ * @param catalogField Catalog field name.
+ * @param array Values to compare against.
+ */
 - (void)excludeItemsWhere:(NSString *)catalogField
                      isIn:(NSArray<NSString *> *)array;
-/// Exclude items where catalog field (a | separated list) contains the given
-/// value.
+/*!
+ * @brief Set exclude criteria.
+ * @discussion Exclude items where catalog field (a | separated list) contains
+ * the given value.
+ * @param catalogField Catalog field name.
+ * @param value Value to compare against.
+ */
 - (void)excludeItemsWhere:(NSString *)catalogField has:(NSString *)value;
-/// Exclude items where catalog field (a | separated list) overlaps with the
-/// given Array of values.
+/*!
+ * @brief Set exclude criteria.
+ * @discussion Exclude items where catalog field (a | separated list) overlaps
+ * with the given array of values.
+ * @param catalogField Catalog field name.
+ * @param array Values to compare against.
+ */
 - (void)excludeItemsWhere:(NSString *)catalogField
                  overlaps:(NSArray<NSString *> *)array;
-/// Include items where catalog field value is exactly the given value.
+/*!
+ * @brief Set include criteria.
+ * @discussion Include items where catalog field value is exactly the given
+ * value.
+ * @param catalogField Catalog field name.
+ * @param value Value to compare against.
+ */
 - (void)includeItemsWhere:(NSString *)catalogField is:(NSString *)value;
-/// Include items where catalog field value is contained in the given Array of
-/// values.
+/*!
+ * @brief Set include criteria.
+ * @discussion Include items where catalog field value is contained in the given
+ * array of values.
+ * @param catalogField Catalog field name.
+ * @param array Values to compare against.
+ */
 - (void)includeItemsWhere:(NSString *)catalogField
                      isIn:(NSArray<NSString *> *)array;
-/// Include items where catalog field (a | separated list) contains the given
-/// value.
+/*!
+ * @brief Set include criteria.
+ * @discussion Include items where catalog field (a | separated list) contains
+ * the given value.
+ * @param catalogField Catalog field name.
+ * @param value Value to compare against.
+ */
 - (void)includeItemsWhere:(NSString *)catalogField has:(NSString *)value;
-/// Include items where catalog field (a | separated list) overlaps with the
-/// given Array of values.
+/*!
+ * @brief Set include criteria.
+ * @discussion Include items where catalog field (a | separated list) overlaps
+ * with the given array of values.
+ * @param catalogField Catalog field name.
+ * @param array Values to compare against.
+ */
 - (void)includeItemsWhere:(NSString *)catalogField
                  overlaps:(NSArray<NSString *> *)array;
 
-/// Recommendation logic.
+/*!
+ * @brief Recommendation logic.
+ * @warning Must be unique per-transaction.
+ */
 @property(readonly) NSString *logic;
-/// Number of items to recommend. Default: 5.
+/*!
+ * @brief Number of items to recommend.
+ * discussion Default: 5.
+ */
 @property(readwrite) int limit;
-/// The item IDs of the original recommendations. Only used when an A/B test is
-/// in progress to compare the performance of the EmarsysMobile recommendations
-/// vs. the
-/// original (baseline) recommendations.
+/*!
+ * @brief The item IDs of the original recommendations.
+ * discussion Only used when an A/B test is in progress to compare the
+ * performance of the EmarsysMobile recommendations vs. the original (baseline)
+ * recommendations.
+ */
 @property(readwrite, copy, nullable) NSArray<NSString *> *baseline;
-/// Callback for the completion handling.
+/*!
+ * @brief Callback for the completion handling.
+ */
 @property(readwrite, copy) void (^completionHandler)
     (EMRecommendationResult *completionHandler);
 

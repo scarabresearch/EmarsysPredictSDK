@@ -335,4 +335,23 @@
     dispatch_semaphore_wait(sema, TIMEOUT);
 }
 
+- (void)testAdvertisingIdentifier {
+    EMTransaction *transaction = [[EMTransaction alloc] init];
+    [transaction setCart:[NSArray array]];
+    [[EMSession sharedSession] sendTransaction:transaction
+                                  errorHandler:^(NSError *_Nonnull error) {
+                                    NSLog(@"%@", [error localizedDescription]);
+                                  }];
+    NSString *advertisingIdentifier = [EMSession sharedSession].advertisingID;
+    XCTAssertNotNil(advertisingIdentifier);
+    EMTransaction *transaction2 = [[EMTransaction alloc] init];
+    [transaction2 setCart:[NSArray array]];
+    [[EMSession sharedSession] sendTransaction:transaction2
+                                  errorHandler:^(NSError *_Nonnull error) {
+                                    NSLog(@"%@", [error localizedDescription]);
+                                  }];
+    XCTAssertEqual(advertisingIdentifier,
+                   [EMSession sharedSession].advertisingID);
+}
+
 @end

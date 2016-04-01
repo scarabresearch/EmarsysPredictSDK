@@ -30,15 +30,13 @@ NS_ASSUME_NONNULL_BEGIN
     return _shared;
 }
 
-- (NSString *)advertisingIdentifier {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-      NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-      if (![defaults objectForKey:@"advertisingID"]) {
-          [defaults setObject:[NSUUID UUID].UUIDString forKey:@"advertisingID"];
-          [defaults synchronize];
-      }
-    });
+- (void)setAdvertisingIdentifier:(NSString *)advertisingIdentifier {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:advertisingIdentifier forKey:@"advertisingID"];
+    [defaults synchronize];
+}
+
+- (nullable NSString *)advertisingIdentifier {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     return (NSString *)[defaults objectForKey:@"advertisingID"];
 }
