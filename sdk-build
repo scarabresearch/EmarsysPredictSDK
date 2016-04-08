@@ -9,7 +9,7 @@ xcodebuild clean -configuration Debug -sdk iphonesimulator
 xcodebuild clean -configuration Release -sdk iphoneos
 xcodebuild clean -configuration Release -sdk iphonesimulator
 
-xcodebuild -target EmarsysMobile -configuration Debug -sdk iphoneos ONLY_ACTIVE_ARCH=NO
-xcodebuild -target EmarsysMobile -configuration Debug -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
-xcodebuild -target EmarsysMobile -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO
-xcodebuild -target EmarsysMobile -configuration Release -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+xcodebuild -target EmarsysPredictSDK -configuration Debug -sdk iphoneos ONLY_ACTIVE_ARCH=NO
+xcodebuild -target EmarsysPredictSDK -configuration Debug -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+xcodebuild -target EmarsysPredictSDK -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO
+xcodebuild -target EmarsysPredictSDK -configuration Release -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
