@@ -1,0 +1,2 @@
+Emarsys Predict SDK
+Copyright 2016 Scarab Research Ltd.
