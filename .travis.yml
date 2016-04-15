@@ -1,0 +1,26 @@
+language: objective-c
+xcode_project: EmarsysPredictSDK.xcodeproj
+xcode_scheme: EmarsysPredictSDK
+osx_image: xcode7.2
+sudo: false
+env:
+  global:
+  - LC_CTYPE=en_US.UTF-8
+  - LANG=en_US.UTF-8
+  - APP_NAME="EmarsysPredictSDK"
+  - PROFILE_NAME="EmarsysPredictSDK"
+  - secure: jFgassAI97iLyAXlbyPLw4CTW5NDZQ3Y7PjmDVy+v3L/mRYTruUZ07lJB4r0sMndGx64XK1OgdNmkuklO7x99Io5nXxLrta5KiPtimBUbtWpIBMkozDqpcXd6vZtnlEwi4p9FtnT2No4TGXuFIZ3c17OETa4bJO1b4UR3B93ClQ9BadAEWlKn2nwMYrc53QObCLrua0TE8KCPwRo5TGfMaE3+tkzBhbuFEpnXgk5t4brzq8YFkdAx08vamvRg16hcGGyR7jsP93CzmxJSNUcRl3AK4QW2xHwlIOPgUEUbIlhFwwDEgSF2I7kjFWBkv1g2LASh4nvAmPOC08osJau62f+rhKMrDZJetRuP6AP1frLOPzuHG67d+gQpjG3s/WVGPBEeCrtDcAl4wtM9ElSPwezo39pAo6TFs7xUmqIAGFPAb5WQz2LuESn1V9wRaeaL8TNok3RLCb3wJVwtvyWxS7f1FyEXje38WUsmJ3kn2db35YOOhOxK5d/d3ToJutMbQ7p1V9qDffXRI1Uh1K7pDwnfr/tVoDM38c6Rx0SNoXLUHQ0vQjzHw/ZJu6tg6hW33Vz0yg97AjC/nu1yNI40vnTW/lD39Kb/KN11i73hI5EjD1Xc2uOesCf+tOywXs1imtM2JvFGFOprA5gNTZ8YMizKSnq1licpqaE4zgGbeY=
+before_script:
+  - openssl aes-256-cbc -k "$ENCRYPTION_SECRET" -in scripts/id_rsa.enc -d -a -out scripts/id_rsa
+script:
+  - set -o pipefail
+  - ./scripts/update-version.sh
+  - xctool test -project EmarsysPredictSDK.xcodeproj -scheme EmarsysPredictSDK -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+  - xctool -project EmarsysPredictSDK.xcodeproj -scheme EmarsysPredictSDK -sdk iphoneos -configuration Release OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO 'CODE_SIGN_RESOURCE_RULES_PATH=$(SDKROOT)/ResourceRules.plist'
+  - xctool -project EmarsysPredictSDK.xcodeproj -scheme EmarsysPredictSDK -sdk iphonesimulator -configuration Release OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO 'CODE_SIGN_RESOURCE_RULES_PATH=$(SDKROOT)/ResourceRules.plist'
+after_script:
+  - ./scripts/deploy.sh
+after_failure:
+  - cat -n ~/Library/Logs/scan/*
+  - cat -n $TMPDIR/com.apple.dt.XCTest-status/Session*.log
+  - cat -n ~/Library/Logs/DiagnosticReports/xctest*.crash
