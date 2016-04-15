@@ -21,7 +21,11 @@
 #import "EMRecommendationResult.h"
 #import "EMRecommendationRequest.h"
 
+#define TIMEOUT_LARGE                                                          \
+    dispatch_time(DISPATCH_TIME_NOW, (int64_t)(8 * NSEC_PER_SEC))
 #define TIMEOUT dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC))
+#define TIMEOUT_SMALL                                                          \
+    dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC))
 
 @interface EmarsysPredictSDKTest : XCTestCase
 
@@ -41,26 +45,6 @@
     // Replace it with your own Merchant ID before run.
     session.merchantID = @"1A74F439823D2CB4";
     session.logLevel = EMLogLevelDebug;
-}
-
-- (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of
-    // each
-    // test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the
-    // correct results.
-}
-
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
 }
 
 - (void)testERROR_MULTIPLE_CALL {
@@ -92,14 +76,13 @@
 
     [transaction setView:@"112"];
     [transaction setView:@"172"];
-
     [[EMSession sharedSession] sendTransaction:transaction
                                   errorHandler:^(NSError *_Nonnull error) {
                                     NSLog(@"%@", [error localizedDescription]);
                                     dispatch_semaphore_signal(sema);
                                   }];
 
-    dispatch_semaphore_wait(sema, TIMEOUT);
+    XCTAssertNotEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_SMALL));
 }
 
 - (void)testERROR_MULTIPLE_CALL_separated {
@@ -123,11 +106,15 @@
     [[EMSession sharedSession] sendTransaction:transaction
                                   errorHandler:errorHandler];
 
+    XCTAssertNotEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_SMALL));
+
     EMTransaction *transaction2 = [[EMTransaction alloc] init];
     [transaction2 setCategory:@"book > literature > sci-fi"];
     [transaction2 setCategory:@"book > literature > horror"];
     [[EMSession sharedSession] sendTransaction:transaction2
                                   errorHandler:errorHandler];
+
+    XCTAssertNotEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_SMALL));
 
     EMTransaction *transaction3 = [[EMTransaction alloc] init];
     [transaction3 setKeyword:@"sci-fi"];
@@ -135,11 +122,15 @@
     [[EMSession sharedSession] sendTransaction:transaction3
                                   errorHandler:errorHandler];
 
+    XCTAssertNotEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_SMALL));
+
     EMTransaction *transaction4 = [[EMTransaction alloc] init];
     [transaction4 setPurchase:@"100" ofItems:items];
     [transaction4 setPurchase:@"101" ofItems:items2];
     [[EMSession sharedSession] sendTransaction:transaction4
                                   errorHandler:errorHandler];
+
+    XCTAssertNotEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_SMALL));
 
     EMTransaction *transaction5 = [[EMTransaction alloc] init];
     [transaction5 setSearchTerm:@"great sci-fi classics"];
@@ -147,39 +138,50 @@
     [[EMSession sharedSession] sendTransaction:transaction5
                                   errorHandler:errorHandler];
 
+    XCTAssertNotEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_SMALL));
+
     EMTransaction *transaction6 = [[EMTransaction alloc] init];
     [transaction6 setView:@"112"];
     [transaction6 setView:@"172"];
     [[EMSession sharedSession] sendTransaction:transaction6
                                   errorHandler:errorHandler];
 
-    dispatch_semaphore_wait(sema, TIMEOUT);
+    XCTAssertNotEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_SMALL));
 }
 
 - (void)testInvalidMerchantID {
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+
     [EMSession sharedSession].merchantID = @"";
     [[EMSession sharedSession]
         sendTransaction:[[EMTransaction alloc] init]
            errorHandler:^(NSError *_Nonnull error) {
              NSLog(@"%@", [error localizedDescription]);
+             dispatch_semaphore_signal(sema);
              XCTAssertEqualObjects([error localizedDescription],
                                    @"The merchantID is required");
            }];
+    XCTAssertEqual(0, dispatch_semaphore_wait(sema, TIMEOUT));
 
+    __block BOOL completionHandlerCalled = NO;
     EMTransaction *transaction = [[EMTransaction alloc] init];
     EMRecommendationRequest *recommend =
         [[EMRecommendationRequest alloc] initWithLogic:@"PERSONAL"];
     recommend.completionHandler = ^(EMRecommendationResult *_Nonnull result) {
-      XCTFail();
+      completionHandlerCalled = YES;
+      dispatch_semaphore_signal(sema);
     };
     [transaction recommend:recommend];
     [[EMSession sharedSession]
         sendTransaction:[[EMTransaction alloc] init]
            errorHandler:^(NSError *_Nonnull error) {
              NSLog(@"%@", [error localizedDescription]);
+             dispatch_semaphore_signal(sema);
              XCTAssertEqualObjects([error localizedDescription],
                                    @"The merchantID is required");
            }];
+    XCTAssertEqual(0, dispatch_semaphore_wait(sema, TIMEOUT));
+    XCTAssertFalse(completionHandlerCalled);
 }
 
 - (void)testERROR_INVALID_ARG_empty_string {
@@ -199,36 +201,47 @@
     [[EMSession sharedSession] sendTransaction:transaction
                                   errorHandler:errorHandler];
 
+    XCTAssertNotEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_SMALL));
+
     EMTransaction *transaction2 = [[EMTransaction alloc] init];
     [transaction2 setCategory:@""];
     [[EMSession sharedSession] sendTransaction:transaction2
                                   errorHandler:errorHandler];
+
+    XCTAssertNotEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_SMALL));
 
     EMTransaction *transaction3 = [[EMTransaction alloc] init];
     [transaction3 setKeyword:@""];
     [[EMSession sharedSession] sendTransaction:transaction3
                                   errorHandler:errorHandler];
 
+    XCTAssertNotEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_SMALL));
+
     EMTransaction *transaction4 = [[EMTransaction alloc] init];
     [transaction4 setPurchase:@"" ofItems:items];
     [[EMSession sharedSession] sendTransaction:transaction4
                                   errorHandler:errorHandler];
+
+    XCTAssertNotEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_SMALL));
 
     EMTransaction *transaction5 = [[EMTransaction alloc] init];
     [transaction5 setSearchTerm:@""];
     [[EMSession sharedSession] sendTransaction:transaction5
                                   errorHandler:errorHandler];
 
+    XCTAssertNotEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_SMALL));
+
     EMTransaction *transaction6 = [[EMTransaction alloc] init];
     [transaction6 setView:@""];
     [[EMSession sharedSession] sendTransaction:transaction6
                                   errorHandler:errorHandler];
 
-    dispatch_semaphore_wait(sema, TIMEOUT);
+    XCTAssertNotEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_SMALL));
 }
 
 - (void)testTRACKING {
     dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+    __block BOOL errorHandlerCalled = NO;
 
     EMTransaction *transaction = [[EMTransaction alloc] init];
     // no filter, just get recs
@@ -267,6 +280,7 @@
               sendTransaction:transaction2
                  errorHandler:^(NSError *_Nonnull error) {
                    NSLog(@"%@", [error localizedDescription]);
+                   errorHandlerCalled = YES;
                    dispatch_semaphore_signal(sema);
                  }];
       } else {
@@ -277,10 +291,12 @@
     [[EMSession sharedSession] sendTransaction:transaction
                                   errorHandler:^(NSError *_Nonnull error) {
                                     NSLog(@"%@", [error localizedDescription]);
+                                    errorHandlerCalled = YES;
                                     dispatch_semaphore_signal(sema);
                                   }];
 
-    dispatch_semaphore_wait(sema, TIMEOUT);
+    XCTAssertEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_LARGE));
+    XCTAssertFalse(errorHandlerCalled);
 }
 
 - (void)testNonUniqueLogic {
@@ -298,8 +314,7 @@
         [transaction recommend:recommend];
     }
     // Firing the EmarsysPredictSDKQueue. Should be the last call on the page,
-    // called
-    // only once.
+    // called only once.
     [[EMSession sharedSession]
         sendTransaction:transaction
            errorHandler:^(NSError *_Nonnull error) {
@@ -310,7 +325,7 @@
              dispatch_semaphore_signal(sema);
            }];
 
-    dispatch_semaphore_wait(sema, TIMEOUT);
+    XCTAssertEqual(0, dispatch_semaphore_wait(sema, TIMEOUT));
 }
 
 - (void)testCATEGORY {
@@ -335,34 +350,53 @@
     [transaction recommend:recommend];
 
     // Firing the EmarsysPredictSDKQueue. Should be the last call on the page,
-    // called
-    // only once.
+    // called only once.
+    __block BOOL errorHandlerCalled = NO;
     [[EMSession sharedSession] sendTransaction:transaction
                                   errorHandler:^(NSError *_Nonnull error) {
                                     NSLog(@"%@", [error localizedDescription]);
+                                    errorHandlerCalled = YES;
                                     dispatch_semaphore_signal(sema);
                                   }];
 
-    dispatch_semaphore_wait(sema, TIMEOUT);
+    XCTAssertEqual(0, dispatch_semaphore_wait(sema, TIMEOUT));
+    XCTAssertFalse(errorHandlerCalled);
 }
 
 - (void)testAdvertisingIdentifier {
+    [self sendEmptyAndWait];
+
+    NSString *advertisingIdentifier = [EMSession sharedSession].advertisingID;
+    XCTAssertNotNil(advertisingIdentifier);
+
+    [self sendEmptyAndWait];
+
+    XCTAssertEqualObjects(advertisingIdentifier,
+                          [EMSession sharedSession].advertisingID);
+}
+
+- (void)sendEmptyAndWait {
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+    __block BOOL errorHandlerCalled = NO;
+
     EMTransaction *transaction = [[EMTransaction alloc] init];
     [transaction setCart:[NSArray array]];
+    [transaction setCategory:@"Accessories"];
+    EMRecommendationRequest *recommend =
+        [[EMRecommendationRequest alloc] initWithLogic:@"CATEGORY"];
+    recommend.completionHandler = ^(EMRecommendationResult *_Nonnull result) {
+      dispatch_semaphore_signal(sema);
+    };
+    [transaction recommend:recommend];
     [[EMSession sharedSession] sendTransaction:transaction
                                   errorHandler:^(NSError *_Nonnull error) {
                                     NSLog(@"%@", [error localizedDescription]);
+                                    errorHandlerCalled = YES;
+                                    dispatch_semaphore_signal(sema);
                                   }];
-    NSString *advertisingIdentifier = [EMSession sharedSession].advertisingID;
-    XCTAssertNotNil(advertisingIdentifier);
-    EMTransaction *transaction2 = [[EMTransaction alloc] init];
-    [transaction2 setCart:[NSArray array]];
-    [[EMSession sharedSession] sendTransaction:transaction2
-                                  errorHandler:^(NSError *_Nonnull error) {
-                                    NSLog(@"%@", [error localizedDescription]);
-                                  }];
-    XCTAssertEqual(advertisingIdentifier,
-                   [EMSession sharedSession].advertisingID);
+
+    XCTAssertEqual(0, dispatch_semaphore_wait(sema, TIMEOUT));
+    XCTAssertFalse(errorHandlerCalled);
 }
 
 @end
