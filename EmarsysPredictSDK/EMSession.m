@@ -128,7 +128,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSURLSessionConfiguration *conf =
         [NSURLSessionConfiguration defaultSessionConfiguration];
     [conf setHTTPAdditionalHeaders:@{
-        @"User-Agent" : @"EmarsysPredictSDK/1.0"
+        @"User-Agent" : [NSString stringWithFormat:@"EmarsysPredictSDK|version:%@|iosversion:%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"], [UIDevice currentDevice].systemVersion]
     }];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:conf];
     NSURLSessionDataTask *dataTask =
