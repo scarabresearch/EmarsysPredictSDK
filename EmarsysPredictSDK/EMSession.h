@@ -15,7 +15,7 @@
  */
 
 #import <EmarsysPredictSDK/EMTransaction.h>
-#import <UIKit/UIkit.h>
+#import <UIKit/UIKit.h>
 
 #pragma mark - EmarsysPredictSDK Session -
 
