@@ -1,7 +1,9 @@
 #Emarsys Predict SDK for iOS
 
 ##Version
-Current Version: 0.9.0
+Current Version: 1.0.0
+
+[![Build Status](https://travis-ci.org/scarabresearch/EmarsysPredictSDK.svg?branch=1.0.0)](https://travis-ci.org/scarabresearch/EmarsysPredictSDK)
 
 ##Overview
 This document describes the Emarsys Predict SDK for the iOS platform. It is intended for iOS mobile app developers who want to integrate Emarsys Predict recommendations into their code. The document describes the main Emarsys Predict SDK interface functions.
