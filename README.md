@@ -12,8 +12,8 @@ pod ‘EmarsysPredictSDK’
 ```
 and run ‘pod install’
 
-- Implement data collection
-- Implement the desired recommendations
+- Implement data collection in the application
+- Implement recommendations
 
 ##Getting started
 
@@ -26,9 +26,9 @@ The interface documentation is [located here](http://cocoadocs.org/docsets/Emars
 
 ###Sample Code
 
-We also created example applications for you to make it easier to implement Emarsys Predict SDK in your ecommerce application, they live in this repository: https://github.com/scarabresearch/EmarsysMobileSamples
+We also created example applications for you to make it easier to implement Emarsys Predict SDK in your ecommerce application, they live [in this repository](https://github.com/scarabresearch/EmarsysMobileSamples).
 
-We <3 open source software, that’s why we open sourced our Emarsys Predict SDK implementation. That way you can be confident, that the library what you include contains only the necessary code to give you awesome recommendations and also manage the data collection. You find the repositiory here: https://github.com/scarabresearch/EmarsysPredictSDK
+We <3 open source software, that’s why we open sourced our Emarsys Predict SDK implementation. That way you can be confident that the library what you include contains only the code necessary to deliver awesome recommendations and also manage the data collection. [You find the repositiory here](https://github.com/scarabresearch/EmarsysPredictSDK).
 
 ##Copyright
 
