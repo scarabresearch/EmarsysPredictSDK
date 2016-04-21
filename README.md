@@ -17,7 +17,7 @@ and run ‘pod install’
 
 ##Getting started
 
-The iOS SDK concept is very similar to our javascript API, please check it before going further unless you are familiar with it.
+The semantics of each EmarsysPredictSDK function is documented in our JavaScript API.
 
 - [Data collection (Web Extend) ](http://documentation.emarsys.com/?p=1753)
 - [Recommendations](http://documentation.emarsys.com/resource/b2c-cloud/predict/implementation/delivering-web-recommendations/)
