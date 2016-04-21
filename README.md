@@ -18,8 +18,14 @@ and run ‘pod install’
 ##Getting started
 
 The semantics of each EmarsysPredictSDK function is documented in our JavaScript API.
+There are two foundamental difference between the Javascript API and the iOS SDK:
 
-- [Data collection (Web Extend) ](http://documentation.emarsys.com/?p=1753)
+- ***Click tracking:*** You should instantiate EMTransaction object with the initWithItem method if the user selects a recommended item
+- ***Rendering recommendations:*** We recommend to use a tableview or a collectionview for displaying the recommendations, and append/make the results from the recommendation to the data source, than reload the data to it.
+
+The ***Javascript API documentation*** lives here:
+
+- [Data collection (Web Extend) ](http://documentation.emarsys.com/resource/b2c-cloud/web-extend/javascript-api/)
 - [Recommendations](http://documentation.emarsys.com/resource/b2c-cloud/predict/implementation/delivering-web-recommendations/)
 
 The interface documentation is [located here](http://cocoadocs.org/docsets/EmarsysPredictSDK/).

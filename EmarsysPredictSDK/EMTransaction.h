@@ -44,8 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*!
  * @brief Set availability zone.
- * @discussion If you run localized versions of your application, you should use
- * this call.
+ * @discussion see javascript api reference for more explonation
  * @param availabilityZone ID of the availability zone.
  */
 - (void)setAvailabilityZone:(NSString *)availabilityZone;
