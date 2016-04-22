@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init;
 /*!
  * @brief Initializes a newly allocated transaction instance, if the user comes from selected(clicked) a recommended item
- * @param item Result item from the last recommendation result item.
+ * @param item The previously selected item object
  */
 - (instancetype)initWithItem:(nullable EMRecommendationItem *)item;
 /*!
