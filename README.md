@@ -23,6 +23,8 @@ There are two foundamental difference between the Javascript API and the iOS SDK
 - ***Click tracking:*** You should instantiate EMTransaction object with the initWithItem method if the user selects a recommended item
 - ***Rendering recommendations:*** We recommend to use a tableview or a collectionview for displaying the recommendations, and append/make the results from the recommendation to the data source, than reload the data to it.
 
+You may filter down the live events on [console](https://console.scarabresearch.com/#/liveevents) for events only coming from iOS devices for developing/debugging purposes.
+
 The ***Javascript API documentation*** lives here:
 
 - [Data collection (Web Extend) ](http://documentation.emarsys.com/resource/b2c-cloud/web-extend/javascript-api/)
