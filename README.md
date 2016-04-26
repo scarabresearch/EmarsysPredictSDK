@@ -20,7 +20,7 @@ and run ‘pod install’
 The semantics of each EmarsysPredictSDK function is documented in our JavaScript API.
 There are two foundamental difference between the Javascript API and the iOS SDK:
 
-- ***Click tracking:*** You should instantiate EMTransaction object with the initWithItem method if the user selects a recommended item
+- ***Click tracking:*** You should instantiate EMTransaction object with the initWithSelectedItemView method in objective c, or EMTransaction.init(item: EMRecommendationItem?) in swift, if the user selects a recommended item
 - ***Rendering recommendations:*** We recommend to use a tableview or a collectionview for displaying the recommendations, and append/make the results from the recommendation to the data source, than reload the data to it.
 
 You may filter down the live events on [console](https://console.scarabresearch.com/#/liveevents) for events only coming from iOS devices for developing/debugging purposes.
