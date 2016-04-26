@@ -257,7 +257,7 @@
           EMRecommendationItem *trackedItem = [result.products firstObject];
           // Add view
           EMTransaction *transaction2 =
-              [[EMTransaction alloc] initWithItem:trackedItem];
+              [[EMTransaction alloc] initWithSelectedItemView:trackedItem];
           [transaction2 setView:[trackedItem.data objectForKey:@"item"]];
           // Add recommend
           EMRecommendationRequest *recommend2 =

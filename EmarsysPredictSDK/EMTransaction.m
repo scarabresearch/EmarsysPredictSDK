@@ -62,10 +62,10 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation EMTransaction
 
 + (instancetype)transactionWithItem:(nullable EMRecommendationItem *)item {
-    return [[EMTransaction alloc] initWithItem:item];
+    return [[EMTransaction alloc] initWithSelectedItemView:item];
 }
 
-- (instancetype)initWithItem:(nullable EMRecommendationItem *)item {
+- (instancetype)initWithSelectedItemView:(nullable EMRecommendationItem *)item {
     self = [self init];
     if (self) {
         _trackedItem = item;
