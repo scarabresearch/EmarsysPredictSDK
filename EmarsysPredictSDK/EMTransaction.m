@@ -227,7 +227,9 @@ NS_ASSUME_NONNULL_BEGIN
                                                          command:@"email"
                                                          message:message]];
         }
-        NSString *sha1 = [customerEmail sha1];
+        
+        NSString *sha1 = [[[[[customerEmail stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] sha1] lowercaseString] substringWithRange:NSMakeRange(0, 16)] stringByAppendingString:@"1"];
+        
         [params add:@"eh" stringValue:sha1];
     }
 
