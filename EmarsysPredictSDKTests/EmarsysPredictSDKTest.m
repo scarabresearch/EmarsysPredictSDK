@@ -27,6 +27,12 @@
 #define TIMEOUT_SMALL                                                          \
     dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC))
 
+@interface EMTransaction ()
+
+- (NSString *)hashEmail:(NSString *)email;
+
+@end
+
 @interface EmarsysPredictSDKTest : XCTestCase
 
 @end
@@ -397,6 +403,12 @@
 
     XCTAssertEqual(0, dispatch_semaphore_wait(sema, TIMEOUT));
     XCTAssertFalse(errorHandlerCalled);
+}
+
+- (void)testEmailhash {
+    EMTransaction *transaction = [[EMTransaction alloc] init];
+    NSString *hash = [transaction hashEmail:@"john@doe.com"];
+    XCTAssertTrue([hash isEqualToString:@"fd9c796f4269b3481"]);
 }
 
 @end

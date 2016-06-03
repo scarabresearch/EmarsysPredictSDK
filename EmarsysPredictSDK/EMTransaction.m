@@ -56,6 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)validateCommandArray:(NSArray<EMCommand *> *)container
                      command:(NSString *)command;
 - (BOOL)validateCommands:(NSError *_Nullable *_Nonnull)error;
+- (NSString *)hashEmail:(NSString *)email;
 
 @end
 
@@ -195,6 +196,10 @@ NS_ASSUME_NONNULL_BEGIN
     return YES;
 }
 
+- (NSString *)hashEmail:(NSString *)email {
+    return [[[[[email stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] sha1] lowercaseString] substringWithRange:NSMakeRange(0, 16)] stringByAppendingString:@"1"];
+}
+
 - (nullable NSString *)serialize:(NSError *_Nullable *_Nonnull)error {
     EMQueryParams *params = [[EMQueryParams alloc] init];
     // Handle customerID
@@ -228,7 +233,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                          message:message]];
         }
         
-        NSString *sha1 = [[[[[customerEmail stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] sha1] lowercaseString] substringWithRange:NSMakeRange(0, 16)] stringByAppendingString:@"1"];
+        NSString *sha1 = [self hashEmail:customerEmail];
         
         [params add:@"eh" stringValue:sha1];
     }
