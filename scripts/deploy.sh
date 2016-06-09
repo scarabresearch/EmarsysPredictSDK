@@ -33,7 +33,7 @@ if [ -n "$TRAVIS_TAG" ]; then
     echo "  spec.license              = 'Apache License, Version 2.0'" >> $PODSPEC_FILE
     echo "  spec.author               = { 'Scarab Research Ltd.' => 'dev@scarabresearch.com' }" >> $PODSPEC_FILE
     echo "  spec.summary              = 'Emarsys Predict and Web Extend iOS SDK'" >> $PODSPEC_FILE
-    echo "  spec.platform             = :ios, '8.4'" >> $PODSPEC_FILE
+    echo "  spec.platform             = :ios, '8.0'" >> $PODSPEC_FILE
     echo "  spec.source               = { :git => 'https://github.com/scarabresearch/EmarsysPredictSDK.git', :tag => '$TRAVIS_TAG' }" >> $PODSPEC_FILE
     echo "  spec.source_files         = 'EmarsysPredictSDK/**/*.{h,m}'" >> $PODSPEC_FILE
     echo "  spec.public_header_files  = ['EmarsysPredictSDK/EmarsysPredictSDK.h', 'EmarsysPredictSDK/EMSession.h', 'EmarsysPredictSDK/EMError.h', 'EmarsysPredictSDK/EMTransaction.h', 'EmarsysPredictSDK/EMCartItem.h', 'EmarsysPredictSDK/EMRecommendationItem.h', 'EmarsysPredictSDK/EMRecommendationResult.h', 'EmarsysPredictSDK/EMRecommendationRequest.h']" >> $PODSPEC_FILE
