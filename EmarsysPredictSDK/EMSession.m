@@ -159,7 +159,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     DLOG(@"%@", query);
     NSURLComponents *components = [[NSURLComponents alloc] init];
-    components.scheme = @"http";
+    components.scheme = @"https";
     components.host = @"recommender.scarabresearch.com";
     components.path = [NSString
         stringWithFormat:@"%@%@%@", @"/merchants/", _merchantID, @"/"];
