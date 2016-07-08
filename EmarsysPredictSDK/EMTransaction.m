@@ -28,6 +28,7 @@
 #import "EMViewCommand.h"
 #import "EMCategoryCommand.h"
 #import "EMKeywordCommand.h"
+#import "EMTagCommand.h"
 #import "EMSearchTermCommand.h"
 #import "EMRecommendCommand.h"
 #import "EMError.h"
@@ -47,6 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(readwrite) NSMutableArray<EMKeywordCommand *> *keywords;
 @property(readwrite) NSMutableArray<EMPurchaseCommand *> *purchases;
 @property(readwrite) NSMutableArray<EMSearchTermCommand *> *searchTerms;
+@property(readwrite) NSMutableArray<EMTagCommand *> *tags;
 @property(readwrite) NSMutableArray<EMViewCommand *> *views;
 @property(readwrite) NSMutableArray<EMRecommendCommand *> *recommends;
 @property(readwrite)
@@ -56,7 +58,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)validateCommandArray:(NSArray<EMCommand *> *)container
                      command:(NSString *)command;
 - (BOOL)validateCommands:(NSError *_Nullable *_Nonnull)error;
-- (NSString *)hashEmail:(NSString *)email;
 
 @end
 
@@ -86,6 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
         _keywords = [[NSMutableArray<EMKeywordCommand *> alloc] init];
         _purchases = [[NSMutableArray<EMPurchaseCommand *> alloc] init];
         _searchTerms = [[NSMutableArray<EMSearchTermCommand *> alloc] init];
+        _tags = [[NSMutableArray<EMTagCommand *> alloc] init];
         _views = [[NSMutableArray<EMViewCommand *> alloc] init];
         _recommends = [[NSMutableArray<EMRecommendCommand *> alloc] init];
         _handlers = [
@@ -114,6 +116,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setKeyword:(NSString *)keyword {
     EMKeywordCommand *c = [[EMKeywordCommand alloc] initWithValue:keyword];
     [_keywords addObject:c];
+}
+
+- (void)setTag:(NSString *)tag {
+    EMTagCommand *c = [[EMTagCommand alloc] initWithValue:tag];
+    [_tags addObject:c];
 }
 
 - (void)setPurchase:(NSString *)orderID ofItems:(NSArray<EMCartItem *> *)items {
@@ -171,6 +178,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self validateCommandArray:_categories command:@"category"];
     [self validateCommandArray:_purchases command:@"purchase"];
     [self validateCommandArray:_searchTerms command:@"searchTerm"];
+    [self validateCommandArray:_tags command:@"tag"];
     [self validateCommandArray:_views command:@"view"];
     // Validate recommends array
     if ([_recommends count] != [_handlers count]) {
@@ -194,10 +202,6 @@ NS_ASSUME_NONNULL_BEGIN
           [_errors addObjectsFromArray:[obj validate]];
         }];
     return YES;
-}
-
-- (NSString *)hashEmail:(NSString *)email {
-    return [[[[[email stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] sha1] lowercaseString] substringWithRange:NSMakeRange(0, 16)] stringByAppendingString:@"1"];
 }
 
 - (nullable NSString *)serialize:(NSError *_Nullable *_Nonnull)error {
@@ -232,10 +236,11 @@ NS_ASSUME_NONNULL_BEGIN
                                                          command:@"email"
                                                          message:message]];
         }
-        
-        NSString *sha1 = [self hashEmail:customerEmail];
-        
-        [params add:@"eh" stringValue:sha1];
+        NSString *trim = [customerEmail stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        NSString *lower = [trim lowercaseString];
+        NSString *sha1 = [lower sha1];
+        NSString *sub = [sha1 substringWithRange:NSMakeRange(0, 16)];
+        [params add:@"eh" stringValue:[sub stringByAppendingString:@"1"]];
     }
 
     // Validate commands
@@ -247,6 +252,12 @@ NS_ASSUME_NONNULL_BEGIN
     if ([_keywords count] > 0) {
         EMKeywordCommand *c = [_keywords lastObject];
         [params add:@"k" stringValue:[c description]];
+    }
+
+    // Handle tags
+    if ([_tags count] > 0) {
+        EMTagCommand *c = [_tags lastObject];
+        [params add:@"t" stringValue:[c description]];
     }
 
     // Handle availabilityZones

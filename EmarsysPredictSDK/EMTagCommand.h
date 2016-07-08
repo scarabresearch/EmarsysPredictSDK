@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-#import "EMSession.h"
+#import "EMStringCommand.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EMSession (EmarsysPredictSDKExtensions)
-
-@property(readwrite) NSString *visitor;
-@property(readwrite) NSString *session;
-
-- (nullable NSURL *)generateGET:(EMTransaction *)transaction
-                          error:(NSError *_Nullable *_Nonnull)error;
+@interface EMTagCommand : EMStringCommand
 
 @end
 

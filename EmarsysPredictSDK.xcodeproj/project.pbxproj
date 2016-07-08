@@ -21,6 +21,7 @@
 		99205E301C7AF2C800D3D5CB /* EMRecommendationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 99205E2F1C7AF2C800D3D5CB /* EMRecommendationRequest.m */; };
 		9924BD751C9961F600538921 /* NSArray+EmarsysPredictSDKExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9924BD741C9961F600538921 /* NSArray+EmarsysPredictSDKExtensions.m */; };
 		992EBA4F1C9FDA6400D941CE /* EMIdentifierManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 992EBA4E1C9FDA6400D941CE /* EMIdentifierManager.m */; };
+		994429EB1D2E992100F5D0B7 /* EMTagCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 994429EA1D2E992100F5D0B7 /* EMTagCommand.m */; };
 		994496AC1C8D6B5A00F68FB9 /* EMQueryParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 994496AB1C8D6B5A00F68FB9 /* EMQueryParams.m */; };
 		994496AF1C8D6C2C00F68FB9 /* EMCartCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 994496AE1C8D6C2C00F68FB9 /* EMCartCommand.m */; };
 		994496B21C8D6C4200F68FB9 /* EMPurchaseCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 994496B11C8D6C4200F68FB9 /* EMPurchaseCommand.m */; };
@@ -98,6 +99,8 @@
 		9924BD741C9961F600538921 /* NSArray+EmarsysPredictSDKExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+EmarsysPredictSDKExtensions.m"; sourceTree = "<group>"; };
 		992EBA4D1C9FDA5600D941CE /* EMIdentifierManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMIdentifierManager.h; sourceTree = "<group>"; };
 		992EBA4E1C9FDA6400D941CE /* EMIdentifierManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMIdentifierManager.m; sourceTree = "<group>"; };
+		994429E91D2E98FF00F5D0B7 /* EMTagCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMTagCommand.h; sourceTree = "<group>"; };
+		994429EA1D2E992100F5D0B7 /* EMTagCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMTagCommand.m; sourceTree = "<group>"; };
 		994496AA1C8D6B4F00F68FB9 /* EMQueryParams.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMQueryParams.h; sourceTree = "<group>"; };
 		994496AB1C8D6B5A00F68FB9 /* EMQueryParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMQueryParams.m; sourceTree = "<group>"; };
 		994496AD1C8D6C2000F68FB9 /* EMCartCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMCartCommand.h; sourceTree = "<group>"; };
@@ -236,6 +239,8 @@
 				994496B11C8D6C4200F68FB9 /* EMPurchaseCommand.m */,
 				991EF8121C931767006A143A /* EMSearchTermCommand.h */,
 				991EF8151C931833006A143A /* EMSearchTermCommand.m */,
+				994429E91D2E98FF00F5D0B7 /* EMTagCommand.h */,
+				994429EA1D2E992100F5D0B7 /* EMTagCommand.m */,
 				99590B131C9010C4008D395C /* EMViewCommand.h */,
 				99590B141C9010D1008D395C /* EMViewCommand.m */,
 				996017161C9A9CA00043F9A2 /* EMRecommendCommand.h */,
@@ -393,6 +398,7 @@
 				991EF8141C9317A6006A143A /* EMStringCommand.m in Sources */,
 				99ED0C681C9C35600019606B /* EMError.m in Sources */,
 				990AD0FF1C7DC04C00585731 /* NSString+EmarsysPredictSDKExtensions.m in Sources */,
+				994429EB1D2E992100F5D0B7 /* EMTagCommand.m in Sources */,
 				994496B21C8D6C4200F68FB9 /* EMPurchaseCommand.m in Sources */,
 				99205E301C7AF2C800D3D5CB /* EMRecommendationRequest.m in Sources */,
 				994496B51C8D6E6900F68FB9 /* EMErrorParameter.m in Sources */,

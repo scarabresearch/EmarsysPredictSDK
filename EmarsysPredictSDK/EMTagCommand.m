@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-#import "EMSession.h"
+#import "EMTagCommand.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface EMSession (EmarsysPredictSDKExtensions)
+@implementation EMTagCommand
 
-@property(readwrite) NSString *visitor;
-@property(readwrite) NSString *session;
-
-- (nullable NSURL *)generateGET:(EMTransaction *)transaction
-                          error:(NSError *_Nullable *_Nonnull)error;
+- (NSArray<EMErrorParameter *> *)validate {
+    NSMutableArray<EMErrorParameter *> *ret =
+    [NSMutableArray<EMErrorParameter *> array];
+    if ([self.value length] == 0) {
+        [ret addObject:[self emptyStringEMErr:@"tag" field:@"tag"]];
+    }
+    return ret;
+}
 
 @end
 

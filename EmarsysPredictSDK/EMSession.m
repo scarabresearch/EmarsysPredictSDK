@@ -50,6 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
     self = [super init];
     if (self) {
         _logLevel = EMLogLevelError;
+        _secure = YES;
     }
     return self;
 }
@@ -130,6 +131,7 @@ NS_ASSUME_NONNULL_BEGIN
     [conf setHTTPAdditionalHeaders:@{
         @"User-Agent" : [NSString stringWithFormat:@"EmarsysPredictSDK|osversion:%@|platform:ios", [UIDevice currentDevice].systemVersion]
     }];
+
     NSURLSession *session = [NSURLSession sessionWithConfiguration:conf];
     NSURLSessionDataTask *dataTask =
         [session dataTaskWithURL:url completionHandler:completionHandler];
@@ -159,7 +161,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
     DLOG(@"%@", query);
     NSURLComponents *components = [[NSURLComponents alloc] init];
-    components.scheme = @"https";
+    components.scheme = _secure ? @"https" : @"http";
     components.host = @"recommender.scarabresearch.com";
     components.path = [NSString
         stringWithFormat:@"%@%@%@", @"/merchants/", _merchantID, @"/"];

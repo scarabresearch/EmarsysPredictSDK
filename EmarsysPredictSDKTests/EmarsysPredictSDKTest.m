@@ -15,7 +15,7 @@
  */
 
 #import <XCTest/XCTest.h>
-#import "EMSession.h"
+#import "EMSession+EmarsysPredictSDKExtensions.h"
 #import "EMTransaction.h"
 #import "EMCartItem.h"
 #import "EMRecommendationResult.h"
@@ -26,12 +26,6 @@
 #define TIMEOUT dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC))
 #define TIMEOUT_SMALL                                                          \
     dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC))
-
-@interface EMTransaction ()
-
-- (NSString *)hashEmail:(NSString *)email;
-
-@end
 
 @interface EmarsysPredictSDKTest : XCTestCase
 
@@ -51,6 +45,7 @@
     // Replace it with your own Merchant ID before run.
     session.merchantID = @"1A74F439823D2CB4";
     session.logLevel = EMLogLevelDebug;
+    [EMSession sharedSession].secure = YES;
 }
 
 - (void)testERROR_MULTIPLE_CALL {
@@ -79,6 +74,9 @@
 
     [transaction setSearchTerm:@"great sci-fi classics"];
     [transaction setSearchTerm:@"great horror classics"];
+
+    [transaction setTag:@"sci-fi"];
+    [transaction setTag:@"horror"];
 
     [transaction setView:@"112"];
     [transaction setView:@"172"];
@@ -150,6 +148,14 @@
     [transaction6 setView:@"112"];
     [transaction6 setView:@"172"];
     [[EMSession sharedSession] sendTransaction:transaction6
+                                  errorHandler:errorHandler];
+
+    XCTAssertNotEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_SMALL));
+
+    EMTransaction *transaction7 = [[EMTransaction alloc] init];
+    [transaction7 setTag:@"sci-fi"];
+    [transaction7 setTag:@"horror"];
+    [[EMSession sharedSession] sendTransaction:transaction7
                                   errorHandler:errorHandler];
 
     XCTAssertNotEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_SMALL));
@@ -240,6 +246,13 @@
     EMTransaction *transaction6 = [[EMTransaction alloc] init];
     [transaction6 setView:@""];
     [[EMSession sharedSession] sendTransaction:transaction6
+                                  errorHandler:errorHandler];
+
+    XCTAssertNotEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_SMALL));
+
+    EMTransaction *transaction7 = [[EMTransaction alloc] init];
+    [transaction7 setTag:@""];
+    [[EMSession sharedSession] sendTransaction:transaction7
                                   errorHandler:errorHandler];
 
     XCTAssertNotEqual(0, dispatch_semaphore_wait(sema, TIMEOUT_SMALL));
@@ -405,10 +418,34 @@
     XCTAssertFalse(errorHandlerCalled);
 }
 
-- (void)testEmailhash {
-    EMTransaction *transaction = [[EMTransaction alloc] init];
-    NSString *hash = [transaction hashEmail:@"john@doe.com"];
-    XCTAssertTrue([hash isEqualToString:@"fd9c796f4269b3481"]);
+- (void)testEmailHash {
+    [EMSession sharedSession].customerEmail = @" CUSTOMER@TEST-mail.com ";
+    NSError *error = nil;
+    EMTransaction *t = [[EMTransaction alloc] init];
+    NSURL* url = [[EMSession sharedSession] generateGET:t error:&error];
+    NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:url
+                                                resolvingAgainstBaseURL:NO];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"name=%@", @"eh"];
+    NSURLQueryItem* queryItem = [[urlComponents.queryItems
+                                  filteredArrayUsingPredicate:predicate]
+                                 firstObject];
+    XCTAssertEqualObjects(queryItem.value, @"19d0b2cccd0b49e81");
+}
+
+- (void)testSecure {
+    NSError *error = nil;
+    EMTransaction *t = [[EMTransaction alloc] init];
+    [EMSession sharedSession].secure = YES;
+    NSURL* url = [[EMSession sharedSession] generateGET:t error:&error];
+    XCTAssertEqualObjects(url.scheme, @"https");
+}
+
+- (void)testInSecure {
+    NSError *error = nil;
+    EMTransaction *t = [[EMTransaction alloc] init];
+    [EMSession sharedSession].secure = NO;
+    NSURL* url = [[EMSession sharedSession] generateGET:t error:&error];
+    XCTAssertEqualObjects(url.scheme, @"http");
 }
 
 @end
