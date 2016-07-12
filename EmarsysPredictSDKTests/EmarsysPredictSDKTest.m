@@ -45,7 +45,7 @@
     // Replace it with your own Merchant ID before run.
     session.merchantID = @"1A74F439823D2CB4";
     session.logLevel = EMLogLevelDebug;
-    [EMSession sharedSession].secure = YES;
+    [EMSession sharedSession].secure = NO;
 }
 
 - (void)testERROR_MULTIPLE_CALL {
@@ -435,7 +435,7 @@
 - (void)testSecure {
     NSError *error = nil;
     EMTransaction *t = [[EMTransaction alloc] init];
-    [EMSession sharedSession].secure = NO;
+    [EMSession sharedSession].secure = YES;
     NSURL* url = [[EMSession sharedSession] generateGET:t error:&error];
     XCTAssertEqualObjects(url.scheme, @"https");
 }
