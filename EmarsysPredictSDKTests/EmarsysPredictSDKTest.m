@@ -435,7 +435,7 @@
 - (void)testSecure {
     NSError *error = nil;
     EMTransaction *t = [[EMTransaction alloc] init];
-    [EMSession sharedSession].secure = YES;
+    [EMSession sharedSession].secure = NO;
     NSURL* url = [[EMSession sharedSession] generateGET:t error:&error];
     XCTAssertEqualObjects(url.scheme, @"https");
 }

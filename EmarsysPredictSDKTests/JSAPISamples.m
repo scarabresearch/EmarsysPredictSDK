@@ -41,7 +41,7 @@
     // Replace it with your own Merchant ID before run.
     session.merchantID = @"1A74F439823D2CB4";
     session.logLevel = EMLogLevelDebug;
-    [EMSession sharedSession].secure = YES;
+    [EMSession sharedSession].secure = NO;
 }
 
 // http://jsfiddle.net/0xrprjrz/1/
