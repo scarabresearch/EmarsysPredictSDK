@@ -419,17 +419,22 @@
 }
 
 - (void)testEmailHash {
-    [EMSession sharedSession].customerEmail = @" CUSTOMER@TEST-mail.com ";
-    NSError *error = nil;
-    EMTransaction *t = [[EMTransaction alloc] init];
-    NSURL* url = [[EMSession sharedSession] generateGET:t error:&error];
-    NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:url
-                                                resolvingAgainstBaseURL:NO];
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"name=%@", @"eh"];
-    NSURLQueryItem* queryItem = [[urlComponents.queryItems
-                                  filteredArrayUsingPredicate:predicate]
-                                 firstObject];
-    XCTAssertEqualObjects(queryItem.value, @"19d0b2cccd0b49e81");
+    NSArray *emails = @[@"foo@bar.com", @"phở@bar.com", @"a@b3d", @"A@B3D", @"ÁáÓÚŐ@b", @"ááóúő@b", @"a@b3def", @"phở@bar.com", @" שדגשדג\r\n  ", @"שדגשדג"];
+    NSArray *hashes = @[@"823776525776c8f21", @"20d47bc4384dafc01", @"61b9a6da2bd0eabc1", @"61b9a6da2bd0eabc1", @"727ddf60784ee9d61", @"727ddf60784ee9d61", @"0348f072f6927d871", @"20d47bc4384dafc01", @"d0c0ee9c20ff3fe51", @"d0c0ee9c20ff3fe51"];
+    [emails enumerateObjectsUsingBlock:^(id email, NSUInteger idx, BOOL *stop) {
+        NSString *hash = [hashes objectAtIndex:idx];
+        [EMSession sharedSession].customerEmail = email;
+        NSError *error = nil;
+        EMTransaction *t = [[EMTransaction alloc] init];
+        NSURL* url = [[EMSession sharedSession] generateGET:t error:&error];
+        NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:url
+                                                    resolvingAgainstBaseURL:NO];
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"name=%@", @"eh"];
+        NSURLQueryItem* queryItem = [[urlComponents.queryItems
+                                      filteredArrayUsingPredicate:predicate]
+                                     firstObject];
+        XCTAssertEqualObjects(queryItem.value, hash);
+    }];
 }
 
 - (void)testSecure {

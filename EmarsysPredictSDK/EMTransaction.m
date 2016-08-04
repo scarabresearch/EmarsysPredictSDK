@@ -236,7 +236,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                          command:@"email"
                                                          message:message]];
         }
-        NSString *trim = [customerEmail stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        
+        NSString *trim = [customerEmail stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         NSString *lower = [trim lowercaseString];
         NSString *sha1 = [lower sha1];
         NSString *sub = [sha1 substringWithRange:NSMakeRange(0, 16)];
