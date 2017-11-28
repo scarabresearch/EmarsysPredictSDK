@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface EMRecommendationItem ()
 
 /// Recommendation result.
-@property(readonly) EMRecommendationResult *result;
+@property(weak, readonly) EMRecommendationResult *result;
 @end
 
 @implementation EMRecommendationItem {
