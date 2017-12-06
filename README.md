@@ -8,6 +8,7 @@ This document describes the Emarsys Predict SDK for the iOS platform. It is inte
 
 Minimum supported version is ***iOS8***
 
+- See the [SDK page on CocoaPods](https://cocoapods.org/pods/EmarsysPredictSDK)
 - You will need a valid product catalog, described here: http://documentation.emarsys.com/resource/b2c-cloud/web-extend/implementing-web-extend/#2
 - Add EmarsysPredictSDK to your podfile to enable Emarsys Predict SDK
 
