@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+cd "${0%/*}"
+
+xcodebuild build test -project EmarsysPredictSDK.xcodeproj -scheme EmarsysPredictSDK -destination 'platform=iOS Simulator,name=iPhone 5'
