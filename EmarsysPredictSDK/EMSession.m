@@ -94,7 +94,7 @@ NS_ASSUME_NONNULL_BEGIN
           err = [NSError errorWithDomain:EMErrorDomain
                                     code:EMErrorBadHTTPStatus
                                 userInfo:d];
-          errorHandler(error);
+          errorHandler(err);
           return;
       }
       // Find cdv
