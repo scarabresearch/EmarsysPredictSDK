@@ -20,6 +20,7 @@
 #import "EMCartItem.h"
 #import "EMRecommendationResult.h"
 #import "EMRecommendationRequest.h"
+#import "EMIdentifierManager.h"
 
 #define TIMEOUT_LARGE                                                          \
     dispatch_time(DISPATCH_TIME_NOW, (int64_t)(8 * NSEC_PER_SEC))
@@ -43,7 +44,7 @@
     // Identifies the merchant account (here the emarsys demo merchant
     // 1A65B5CB868AFF1E).
     // Replace it with your own Merchant ID before run.
-    session.merchantID = @"1A74F439823D2CB4";
+    session.merchantID = @"1C6C90E80FB5003C";
     session.logLevel = EMLogLevelDebug;
     [EMSession sharedSession].secure = NO;
 }
@@ -345,6 +346,21 @@
            }];
 
     XCTAssertEqual(0, dispatch_semaphore_wait(sema, TIMEOUT));
+}
+
+- (void)testCategoryWhenCategoryContainsAMPcharacter {
+    NSString *advertisingIdentifier = [[EMIdentifierManager sharedManager] advertisingIdentifier];
+    EMSession *session = [EMSession sharedSession];
+    NSString *sessionId = [session session];
+    
+    EMTransaction *transaction = [[EMTransaction alloc] init];
+    [transaction setCart:[NSArray array]];
+    [transaction setCategory:@"Accessories & Others"];
+    NSError *error;
+    NSURL *url = [session generateGET:transaction
+                                                  error:&error];
+    BOOL success = [url.absoluteString isEqualToString:[NSString stringWithFormat:@"http://recommender.scarabresearch.com/merchants/1C6C90E80FB5003C/?vi=%@&cp=1&s=%@&cv=1&ca=&vc=Accessories%%20%%26%%20Others", advertisingIdentifier, sessionId]];
+    XCTAssertTrue(success);
 }
 
 - (void)testCATEGORY {

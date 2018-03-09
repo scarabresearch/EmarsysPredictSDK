@@ -32,7 +32,13 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)add:(NSString *)key stringValue:(NSString *)value {
-    [_data setValue:value forKey:key];
+    NSMutableCharacterSet *allowedCharacterSet = [[NSMutableCharacterSet alloc]init];
+    [allowedCharacterSet formUnionWithCharacterSet:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    [allowedCharacterSet removeCharactersInString:@"&"];
+    
+    NSString *encodedValue = [value stringByAddingPercentEncodingWithAllowedCharacters: allowedCharacterSet];
+    [_data setValue:encodedValue
+             forKey:key];
 }
 
 - (void)add:(NSString *)key intValue:(int)value {

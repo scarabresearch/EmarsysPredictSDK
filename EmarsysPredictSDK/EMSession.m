@@ -165,7 +165,7 @@ NS_ASSUME_NONNULL_BEGIN
     components.host = @"recommender.scarabresearch.com";
     components.path = [NSString
         stringWithFormat:@"%@%@%@", @"/merchants/", _merchantID, @"/"];
-    components.query = query;
+    components.percentEncodedQuery = query;
     return [components URL];
 }
 
