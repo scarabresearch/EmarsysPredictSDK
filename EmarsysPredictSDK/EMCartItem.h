@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface EMCartItem : NSObject
 
-- (nullable instancetype)init UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init __attribute__((unavailable("use initWithItemID:price:quantity:")));
 
 /*!
  * @brief Initializes a newly allocated item instance.

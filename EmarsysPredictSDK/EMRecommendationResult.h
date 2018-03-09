@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface EMRecommendationResult : NSObject
 
-- (nullable instancetype)init UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init __attribute__((unavailable("")));
 
 /*!
  * @brief The array of recommended items.

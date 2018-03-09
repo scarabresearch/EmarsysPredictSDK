@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface EMRecommendationRequest : NSObject
 
-- (nullable instancetype)init UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init __attribute__((unavailable("use initWithLogic or requestWithLogic")));
 /*!
  * @brief Initializes a newly allocated request instance.
  * @param logic The recommendation strategy to be used. Eg. recommend similar

@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation EMRecommendationRequest
 
-- (nullable instancetype)init {
+- (instancetype)init {
     NSAssert(NO, @"Unavailable init methods was invoked");
     return nil;
 }

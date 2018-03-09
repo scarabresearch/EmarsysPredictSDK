@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 @synthesize products = _products;
 
-- (nullable instancetype)init {
+- (instancetype)init {
     NSAssert(NO, @"Unavailable init methods was invoked");
     return nil;
 }
